@@ -1,0 +1,10 @@
+{
+    "makefile.makePath": "C:\\msys64\\mingw64\\bin\\mingw32-make.exe",
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "c:\\Users\\Hamid.Kisha\\CppCourse\\CppDemo",
+            "binaryPath": "c:\\Users\\Hamid.Kisha\\CppCourse\\CppDemo\\main.exe",
+            "binaryArgs": []
+        }
+    ]
+}
