@@ -1,21 +1,30 @@
 #ifndef DOORSYSTEM_H
 #define DOORSYSTEM_H
 
+#include <map>
+#include "Card.h"
+
+
+enum class LampLight {ORANGE, GREEN, RED};
+
 class DoorSystem
 {
 private:
-    int m_year{};
-    int m_month{};
-    int m_day{};
+    // void openDoor();
+    // void listCards();
+    // void addCard(int card_id);
+    // void addAccess(int card_id);
+    // void removeAccess(int card_id);
+    void print_admin_menu();
+    
+    std::map<int, Card> cards_;
+    LampLight lamplight_;
 
 public:
     DoorSystem();
 
-    void SetDate(int year, int month, int day);
+    void startSystem();
 
-    int getYear() const { return m_year; }
-    int getMonth() const { return m_month; }
-    int getDay() const { return m_day; }
 };
 
 #endif
