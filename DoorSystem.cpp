@@ -5,9 +5,30 @@
 
 DoorSystem::DoorSystem(): lamplight_ (LampLight::ORANGE) {}
 
+std::ostream& operator<< (std::ostream& os, const LampLight& lampLight)
+{
+    std::string lampLightStr;
+    switch (lampLight)
+    {
+        case LampLight::ORANGE:
+            lampLightStr = "ORANGE";
+            break;
+        case LampLight::GREEN:
+            lampLightStr = "GREEN";
+            break;
+        case LampLight::RED:
+            lampLightStr = "RED";
+        default:
+            break;
+    }
+    os << lampLightStr;
+    return os;
+}
+
 void DoorSystem::startSystem() {
     std::cout << "Door system started" << std::endl;
     print_admin_menu();
+    std::cout << lamplight_ << std::endl;
 }
 
 void DoorSystem::print_admin_menu() {
