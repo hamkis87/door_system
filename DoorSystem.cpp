@@ -25,9 +25,44 @@ std::ostream& operator<< (std::ostream& os, const LampLight& lampLight)
     return os;
 }
 
+bool DoorSystem::executeUserChoice(int userChoice) {
+    switch (userChoice) {
+                case 1:
+                    std::cout << "Execute 1 option" << std::endl;
+                    break;
+                case 2:
+                    std::cout << "Execute 2 option" << std::endl;
+                    break;
+                case 3:
+                    std::cout << "Execute 3 option" << std::endl;
+                    break;
+                case 4:
+                    std::cout << "Execute 4 option" << std::endl;
+                    return false;
+                case 5:
+                    std::cout << "Execute 5 option" << std::endl;
+                    break;
+                default:
+                    std::cout << "Unavailable option" << std::endl;
+    }
+    return true;
+}
+
 void DoorSystem::startSystem() {
     std::cout << "Door system started" << std::endl;
-    print_admin_menu();
+    bool keepSystemRun = true;
+    while (keepSystemRun) {
+        print_admin_menu();
+        int userChoice;
+        if (getValidUserInput(userChoice)) {
+            std::cout << "user chose " << userChoice << std::endl;
+            keepSystemRun = executeUserChoice(userChoice);
+        }
+        else {
+            std::cout << "Sorry! Data enetered is not valid!" << std::endl;
+            std::cout << "Please try again with valid data!" << std::endl;
+        }
+    }
     std::cout << lamplight_ << std::endl;
 }
 

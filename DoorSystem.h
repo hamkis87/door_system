@@ -3,6 +3,7 @@
 
 #include <map>
 #include "Card.h"
+#include "Utilities.h"
 
 
 enum class LampLight {ORANGE, GREEN, RED};
@@ -16,6 +17,7 @@ private:
     // void addAccess(int card_id);
     // void removeAccess(int card_id);
     void print_admin_menu();
+    bool executeUserChoice(int userChoice);
     
     std::map<int, Card> cards_;
     LampLight lamplight_;

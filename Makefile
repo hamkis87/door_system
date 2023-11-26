@@ -1,5 +1,5 @@
 PROG = main.exe 
-SRC = main.cpp DoorSystem.cpp Card.cpp 
+SRC = main.cpp DoorSystem.cpp Card.cpp Utilities.cpp
 CC=g++
 CFLAGS = -g
 LIBS = 

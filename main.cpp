@@ -2,7 +2,6 @@
 // #include <chrono>
 #include "DoorSystem.h"
 
-
 int main() {
     DoorSystem doorSystem;
     doorSystem.startSystem();    
