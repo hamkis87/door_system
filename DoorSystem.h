@@ -11,13 +11,12 @@ enum class LampLight {ORANGE, GREEN, RED};
 class DoorSystem
 {
 private:
-    // void openDoor();
+    void openDoor();
     // void listCards();
     // void addCard(int card_id);
     // void addAccess(int card_id);
     // void removeAccess(int card_id);
     void print_admin_menu();
-    bool executeUserChoice(int userChoice);
     
     std::map<int, Card> cards_;
     LampLight lamplight_;
@@ -25,7 +24,7 @@ private:
 public:
     DoorSystem();
 
-    void startSystem();
+    void run();
 
 };
 

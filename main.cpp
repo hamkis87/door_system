@@ -4,6 +4,6 @@
 
 int main() {
     DoorSystem doorSystem;
-    doorSystem.startSystem();    
+    doorSystem.run();    
     return 0;
 }
