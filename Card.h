@@ -5,13 +5,13 @@ class Card
 {
 private:
     int card_id_;
-    bool has_access_;
+    bool access_;
 
 public:
     Card(int card_id);
 
-    void add_access();
-    void remove_access();
+    bool has_access() const;
+    void set_access(bool accessFlag);
 
 };
 

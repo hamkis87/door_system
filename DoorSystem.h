@@ -13,9 +13,7 @@ class DoorSystem
 private:
     void openDoor();
     // void listCards();
-    // void addCard(int card_id);
-    // void addAccess(int card_id);
-    // void removeAccess(int card_id);
+    void addOrRemoveAccess();
     void print_admin_menu();
     
     std::map<int, Card> cards_;

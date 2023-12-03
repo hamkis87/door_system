@@ -2,10 +2,10 @@
 
 Card::Card(int card_id):card_id_ (card_id) {}
 
-void Card::add_access() {
-    has_access_ = true;
+bool Card::has_access() const {
+    return access_;
 }
 
-void Card::remove_access() {
-    has_access_ = false;
+void Card::set_access(bool accessFlag) {
+    access_ = accessFlag;
 }

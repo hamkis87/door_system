@@ -2,9 +2,11 @@
 #include <thread>
 #include <iostream>
 #include <iomanip>
+#include <string>
 #include "DoorSystem.h"
 
 using std::cout; using std::endl;
+using std::string;
 using std::this_thread::sleep_for;
 using namespace std::chrono_literals;
 
@@ -38,6 +40,35 @@ void DoorSystem::openDoor() {
     lamplight_ = LampLight::ORANGE;
 }
 
+void DoorSystem::addOrRemoveAccess() {
+    int cardNumber;
+    cout << "Enter card number> ";
+    if (getValidUserInput(cardNumber)) {
+        bool hasAccess = false;
+        bool isNewCard = true;
+        if (cards_.find(cardNumber) != cards_.end()) {
+            isNewCard = false;
+            hasAccess = cards_.at(cardNumber).has_access();
+        }
+        string accessInfo = hasAccess ? "has access" : "has no access";
+        cout << "This card " << accessInfo;
+        cout << ". Enter 1 for access, 2 for no access: ";
+        int accessInput;
+        hasAccess = getValidUserInput(accessInput)? (accessInput == 1): false;
+        if (isNewCard) {
+            Card card(cardNumber);
+            card.set_access(hasAccess);
+            cards_.emplace(cardNumber, card);
+        }
+        else {
+            cards_.at(cardNumber).set_access(hasAccess);
+        }
+    }
+    else {
+        cout << "Sorry the card number is invalid" << endl;
+    }
+}
+
 void DoorSystem::run() {
     cout << "Door system started" << endl;
     bool keepSystemRun = true;
@@ -54,7 +85,7 @@ void DoorSystem::run() {
                     cout << "Execute 2 option" << endl;
                     break;
                 case 3:
-                    cout << "Execute 3 option" << endl;
+                    addOrRemoveAccess();
                     break;
                 case 4:
                     cout << "Execute 4 option" << endl;
