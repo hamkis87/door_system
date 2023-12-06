@@ -1,7 +1,7 @@
 PROG = main.exe 
 SRC = main.cpp DoorSystem.cpp Card.cpp Utilities.cpp
 CC=g++
-CFLAGS = -g -std=c++17
+CFLAGS = -g -std=c++20
 LIBS = 
 
 all: $(PROG)

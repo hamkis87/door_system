@@ -1,4 +1,3 @@
-#include <chrono>
 #include <thread>
 #include <iostream>
 #include <iomanip>
@@ -59,6 +58,14 @@ void DoorSystem::addOrRemoveAccess() {
             Card card(cardNumber);
             card.set_access(hasAccess);
             cards_.emplace(cardNumber, card);
+            const std::chrono::time_point now{std::chrono::system_clock::now()};
+            const std::chrono::year_month_day ymd{std::chrono::floor<std::chrono::days>(now)};
+            std::cout << "ymd: " << ymd << '\n';
+            // constexpr auto ymd2 = std::chrono::year_month_day(
+            //     2020y, std::chrono::January, 31d // overload (2)
+            //     );
+            // std::cout << "ymd2: " << ymd2 << '\n';
+            
         }
         else {
             cards_.at(cardNumber).set_access(hasAccess);
