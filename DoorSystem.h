@@ -12,7 +12,7 @@ class DoorSystem
 {
 private:
     void openDoor();
-    // void listCards();
+    void listCards();
     void addOrRemoveAccess();
     void print_admin_menu();
     

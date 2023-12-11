@@ -9,7 +9,7 @@ bool getValidUserInput(int &x) {
     std::stringstream userInputStringS(userInput);
     int n;
     char c;
-    if (userInputStringS >> n && !(userInputStringS >> c)) {
+    if (userInputStringS >> n && !(userInputStringS >> c) && (n > 0)) {
         x = n;
         return true;
     }

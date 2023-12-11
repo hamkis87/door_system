@@ -39,6 +39,13 @@ void DoorSystem::openDoor() {
     lamplight_ = LampLight::ORANGE;
 }
 
+void DoorSystem::listCards() {
+    for (auto i = cards_.begin(); i != cards_.end(); i++) {
+        Card card = i->second;
+        cout << card;
+    }
+}
+
 void DoorSystem::addOrRemoveAccess() {
     int cardNumber;
     cout << "Enter card number> ";
@@ -55,12 +62,14 @@ void DoorSystem::addOrRemoveAccess() {
         int accessInput;
         hasAccess = getValidUserInput(accessInput)? (accessInput == 1): false;
         if (isNewCard) {
-            Card card(cardNumber);
-            card.set_access(hasAccess);
-            cards_.emplace(cardNumber, card);
+            //Card card(cardNumber);
+            //card.set_access(hasAccess);
+            //cards_.emplace(cardNumber, card);
             const std::chrono::time_point now{std::chrono::system_clock::now()};
             const std::chrono::year_month_day ymd{std::chrono::floor<std::chrono::days>(now)};
-            std::cout << "ymd: " << ymd << '\n';
+            cout << "ymd: " << ymd << '\n';
+            Card card(cardNumber, hasAccess, ymd);
+            cards_.emplace(cardNumber, card);
             // constexpr auto ymd2 = std::chrono::year_month_day(
             //     2020y, std::chrono::January, 31d // overload (2)
             //     );
@@ -89,7 +98,7 @@ void DoorSystem::run() {
                     openDoor();
                     break;
                 case 2:
-                    cout << "Execute 2 option" << endl;
+                    listCards();
                     break;
                 case 3:
                     addOrRemoveAccess();
