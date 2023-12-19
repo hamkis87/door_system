@@ -6,7 +6,7 @@
 #include "Utilities.h"
 
 
-enum class LampLight {ORANGE, GREEN, RED};
+enum class LampLight {OFF, GREEN, RED};
 
 class DoorSystem
 {
@@ -14,6 +14,7 @@ private:
     void openDoor();
     void listCards();
     void addOrRemoveAccess();
+    void scanCard();
     void print_admin_menu();
     
     std::map<int, Card> cards_;

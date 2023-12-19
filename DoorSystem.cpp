@@ -10,15 +10,15 @@ using std::this_thread::sleep_for;
 using namespace std::chrono_literals;
 
 
-DoorSystem::DoorSystem(): lamplight_ (LampLight::ORANGE) {}
+DoorSystem::DoorSystem(): lamplight_ (LampLight::OFF) {}
 
 std::ostream& operator<< (std::ostream& os, const LampLight& lampLight)
 {
     std::string lampLightStr;
     switch (lampLight)
     {
-        case LampLight::ORANGE:
-            lampLightStr = "ORANGE";
+        case LampLight::OFF :
+            lampLightStr = "OFF";
             break;
         case LampLight::GREEN:
             lampLightStr = "GREEN";
@@ -36,14 +36,20 @@ void DoorSystem::openDoor() {
     lamplight_ = LampLight::GREEN;
     cout << lamplight_;
     sleep_for(3s);
-    lamplight_ = LampLight::ORANGE;
+    lamplight_ = LampLight::OFF;
 }
 
 void DoorSystem::listCards() {
-    for (auto i = cards_.begin(); i != cards_.end(); i++) {
-        Card card = i->second;
-        cout << card;
+    if (!cards_.empty()) {
+        for (auto i = cards_.begin(); i != cards_.end(); i++) {
+            Card card = i->second;
+            cout << card;
+        }
     }
+    else {
+        cout << "No cards exist in the system" << endl; 
+    }
+    
 }
 
 void DoorSystem::addOrRemoveAccess() {
@@ -62,9 +68,6 @@ void DoorSystem::addOrRemoveAccess() {
         int accessInput;
         hasAccess = getValidUserInput(accessInput)? (accessInput == 1): false;
         if (isNewCard) {
-            //Card card(cardNumber);
-            //card.set_access(hasAccess);
-            //cards_.emplace(cardNumber, card);
             const std::chrono::time_point now{std::chrono::system_clock::now()};
             const std::chrono::year_month_day ymd{std::chrono::floor<std::chrono::days>(now)};
             cout << "ymd: " << ymd << '\n';
@@ -85,14 +88,32 @@ void DoorSystem::addOrRemoveAccess() {
     }
 }
 
+void DoorSystem::scanCard() {
+    int cardNumber;
+    cout << "Please scan card to enter ";
+    cout << "or X to go back to admin mode" << endl;
+    if (getValidUserInput(cardNumber)) {
+        if (cards_.find(cardNumber) != cards_.end() && 
+            cards_.at(cardNumber).has_access()) {
+            lamplight_ = LampLight::GREEN;
+        }
+        else {
+            lamplight_ = LampLight::RED;
+        }
+        cout << lamplight_;
+        sleep_for(3s);
+        lamplight_ = LampLight::OFF;    
+    }
+}
+
 void DoorSystem::run() {
-    cout << "Door system started" << endl;
+    //cout << "Door system started" << endl;
     bool keepSystemRun = true;
     while (keepSystemRun) {
         print_admin_menu();
         int userChoice;
         if (getValidUserInput(userChoice)) {
-            cout << "user chose " << userChoice << endl;
+            //cout << "user chose " << userChoice << endl;
             switch (userChoice) {
                 case 1:
                     openDoor();
@@ -104,11 +125,10 @@ void DoorSystem::run() {
                     addOrRemoveAccess();
                     break;
                 case 4:
-                    cout << "Execute 4 option" << endl;
                     keepSystemRun = false;
                     break;
                 case 5:
-                    cout << "Execute 5 option" << endl;
+                    scanCard();
                     break;
                 default:
                     cout << "Unavailable option" << endl;
