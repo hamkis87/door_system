@@ -39,17 +39,26 @@ void DoorSystem::openDoor() {
     lamplight_ = LampLight::OFF;
 }
 
-void DoorSystem::listCards() {
+void DoorSystem::listCards(std::ostream& out) {
     if (!cards_.empty()) {
         for (auto i = cards_.begin(); i != cards_.end(); i++) {
             Card card = i->second;
-            cout << card;
+            out << card;
         }
     }
-    else {
-        cout << "No cards exist in the system" << endl; 
-    }
-    
+}
+
+void DoorSystem::listCards() {
+    // if (!cards_.empty()) {
+    //     for (auto i = cards_.begin(); i != cards_.end(); i++) {
+    //         Card card = i->second;
+    //         cout << card;
+    //     }
+    // }
+    // else {
+    //     cout << "No cards exist in the system" << endl; 
+    // }
+    listCards(cout);
 }
 
 void DoorSystem::addOrRemoveAccess() {
@@ -70,7 +79,7 @@ void DoorSystem::addOrRemoveAccess() {
         if (isNewCard) {
             const std::chrono::time_point now{std::chrono::system_clock::now()};
             const std::chrono::year_month_day ymd{std::chrono::floor<std::chrono::days>(now)};
-            cout << "ymd: " << ymd << '\n';
+            //cout << "ymd: " << ymd << '\n';
             Card card(cardNumber, hasAccess, ymd);
             cards_.emplace(cardNumber, card);
             // constexpr auto ymd2 = std::chrono::year_month_day(
@@ -106,6 +115,12 @@ void DoorSystem::scanCard() {
     }
 }
 
+void DoorSystem::saveCardData() {
+    std::ofstream data_file("cardInfo.txt");
+    listCards(data_file);
+    data_file.close();
+}
+
 void DoorSystem::run() {
     //cout << "Door system started" << endl;
     bool keepSystemRun = true;
@@ -126,6 +141,7 @@ void DoorSystem::run() {
                     break;
                 case 4:
                     keepSystemRun = false;
+                    saveCardData();
                     break;
                 case 5:
                     scanCard();
