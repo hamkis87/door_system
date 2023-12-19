@@ -10,8 +10,12 @@ using std::this_thread::sleep_for;
 using namespace std::chrono_literals;
 
 
-DoorSystem::DoorSystem(): lamplight_ (LampLight::OFF) {}
-
+// DoorSystem::DoorSystem(): lamplight_ (LampLight::OFF) {}
+DoorSystem::DoorSystem(std::string cards_file_name) {
+    cards_file_name_ = cards_file_name;
+    lamplight_ = LampLight::OFF;
+    readCardData();
+}
 std::ostream& operator<< (std::ostream& os, const LampLight& lampLight)
 {
     std::string lampLightStr;
@@ -49,15 +53,6 @@ void DoorSystem::listCards(std::ostream& out) {
 }
 
 void DoorSystem::listCards() {
-    // if (!cards_.empty()) {
-    //     for (auto i = cards_.begin(); i != cards_.end(); i++) {
-    //         Card card = i->second;
-    //         cout << card;
-    //     }
-    // }
-    // else {
-    //     cout << "No cards exist in the system" << endl; 
-    // }
     listCards(cout);
 }
 
@@ -115,8 +110,47 @@ void DoorSystem::scanCard() {
     }
 }
 
+void DoorSystem::readCardData() {
+    std::ifstream data_file(cards_file_name_);
+    std::string line;
+    while (std::getline(data_file, line)) {
+        int card_id;
+        std::string temp_str;
+        std::stringstream lineStream(line);
+        if (lineStream >> card_id && lineStream >> temp_str) {
+            int n = 0;
+            bool hasAccess = false; 
+            if (temp_str == "Access") {
+                hasAccess = true;
+                n = 3; // there are 3 strings before reading the date
+            }
+            else if (temp_str == "No")
+                n = 4; // there are 4 strings before reading the date
+            else // line corrupted
+                continue;
+            for(int i = 0; i < n; ++i) {
+                lineStream >> temp_str;
+            }
+            unsigned int a,b,c;
+            char ch;
+            if (lineStream >> a && lineStream >> ch && lineStream >> b &&
+                lineStream >> ch && lineStream >> c) {
+                const unsigned int y = a; const unsigned int m = b;
+                const unsigned int d = c;
+                std::chrono::month m1{m};
+                std::chrono::year y1{y};
+                std::chrono::day d1{d};
+                auto ymd = std::chrono::year_month_day(y1, m1, d1);
+                Card card(card_id, hasAccess, ymd);
+                cards_.emplace(card_id, card);   
+            }
+        }
+    }
+    data_file.close();
+}
+
 void DoorSystem::saveCardData() {
-    std::ofstream data_file("cardInfo.txt");
+    std::ofstream data_file(cards_file_name_);
     listCards(data_file);
     data_file.close();
 }
